@@ -1,23 +1,6 @@
 import { Document } from 'mongoose';
 
-// User types
-// User types
-export interface UserBase {
-  email: string;
-  name?: string;
-  createdAt: Date;
-  updatedAt: Date;
-}
-
-export interface UserData extends UserBase {
-  _id: string;
-}
-
-export interface IUser extends Document, UserBase {
-  password: string;
-  resetToken?: string;
-  resetTokenExpiry?: Date;
-}
+// User types removed
 
 // Conversation types
 export interface ConversationBase {
@@ -62,26 +45,6 @@ export interface FAQBase {
 export interface IFAQ extends Document, FAQBase { }
 
 // API Request/Response types
-export interface RegisterRequest {
-  email: string;
-  password: string;
-  name?: string;
-}
-
-export interface LoginRequest {
-  email: string;
-  password: string;
-}
-
-export interface ResetPasswordRequest {
-  email: string;
-}
-
-export interface VerifyResetTokenRequest {
-  token: string;
-  newPassword: string;
-}
-
 export interface SendMessageRequest {
   conversationId?: string;
   content: string;

@@ -1,7 +1,6 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
-import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import ConversationSidebar from '@/app/components/chat/ConversationSidebar';
 import MessageBubble from '@/app/components/chat/MessageBubble';
@@ -9,7 +8,6 @@ import MessageInput from '@/app/components/chat/MessageInput';
 import { ConversationData, MessageData } from '@/types';
 
 export default function ChatPage() {
-    const { data: session, status } = useSession();
     const router = useRouter();
 
     const [conversations, setConversations] = useState<ConversationData[]>([]);
@@ -19,11 +17,6 @@ export default function ChatPage() {
     const [isHistoryLoading, setIsHistoryLoading] = useState(true);
 
     const messageEndRef = useRef<HTMLDivElement>(null);
-
-    // Protected route check disabled
-    useEffect(() => {
-        // Everyone is welcome
-    }, [status, router]);
 
     // Fetch conversations on mount
     useEffect(() => {
@@ -130,12 +123,19 @@ export default function ChatPage() {
                     });
                 }
             } else {
-                throw new Error('Failed to send message');
+                let errorMessage = 'Failed to send message';
+                try {
+                    const errorData = await res.json();
+                    errorMessage = errorData.error || errorMessage;
+                } catch (e) {
+                    // Ignore json parse error
+                }
+                throw new Error(errorMessage);
             }
-        } catch (err) {
+        } catch (err: any) {
             console.error('Send message error:', err);
             // Remove the temp message on error? Or show error state.
-            alert('Failed to get AI response. Please try again.');
+            alert(`Error: ${err.message || 'Failed to get AI response. Please try again.'}`);
         } finally {
             setIsLoading(false);
         }
@@ -170,11 +170,8 @@ export default function ChatPage() {
         }
     };
 
-    if (status === 'loading') return (
-        <div className="flex-grow flex items-center justify-center">
-            <div className="w-12 h-12 border-4 border-indigo-200 border-t-indigo-600 rounded-full animate-spin"></div>
-        </div>
-    );
+    // Loading state removed
+
 
     return (
         <div className="flex h-[calc(100vh-64px)] overflow-hidden">
@@ -197,7 +194,7 @@ export default function ChatPage() {
                                     </svg>
                                 </div>
                                 <div>
-                                    <h2 className="text-2xl font-bold text-slate-800">Hello, {session?.user?.name || 'Friend'}!</h2>
+                                    <h2 className="text-2xl font-bold text-slate-800">Hello, Guest!</h2>
                                     <p className="text-slate-500 mt-2">How can SheaBot help you today?</p>
                                 </div>
                                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 w-full max-w-xl">

@@ -1,11 +1,9 @@
 'use client';
 
 import Link from 'next/link';
-import { useSession, signOut } from 'next-auth/react';
 import { useState } from 'react';
 
 export default function Header() {
-    const { data: session } = useSession();
     const [isMenuOpen, setIsMenuOpen] = useState(false);
 
     return (

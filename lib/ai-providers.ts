@@ -51,9 +51,11 @@ export async function generateOpenAIResponse(
         });
 
         return completion.choices[0]?.message?.content || 'No response generated';
-    } catch (error) {
+    } catch (error: any) {
         console.error('OpenAI API Error:', error);
-        throw new Error('Failed to generate response from OpenAI');
+        // Fallback for demo/testing if quota exceeded or key missing
+        // Return the API error as the assistant's response
+        return `OpenAI API Error: ${error?.message || 'Unknown error'}`;
     }
 }
 
@@ -65,7 +67,7 @@ export async function generateGeminiResponse(
     systemPrompt?: string
 ): Promise<string> {
     try {
-        const model = genAI.getGenerativeModel({ model: 'gemini-2.0-flash-exp' });
+        const model = genAI.getGenerativeModel({ model: 'gemini-2.0-flash' });
 
         // Build conversation history for Gemini
         const history = messages.slice(0, -1).map((msg) => ({
@@ -73,23 +75,34 @@ export async function generateGeminiResponse(
             parts: [{ text: msg.content }],
         }));
 
-        const chat = model.startChat({
+        const chatConfig: any = {
             history,
             generationConfig: {
                 temperature: 0.7,
                 maxOutputTokens: 1000,
             },
-            systemInstruction: systemPrompt,
-        });
+        };
+
+        // Only add systemInstruction if it exists and is not empty
+        if (systemPrompt && systemPrompt.trim()) {
+            chatConfig.systemInstruction = {
+                parts: [{ text: systemPrompt }],
+                role: 'user'
+            };
+        }
+
+        const chat = model.startChat(chatConfig);
 
         const lastMessage = messages[messages.length - 1];
         const result = await chat.sendMessage(lastMessage.content);
         const response = await result.response;
 
         return response.text() || 'No response generated';
-    } catch (error) {
+    } catch (error: any) {
         console.error('Gemini API Error:', error);
-        throw new Error('Failed to generate response from Gemini');
+        // Fallback for demo/testing
+        // Return the API error as the assistant's response
+        return `Gemini API Error: ${error?.message || 'Unknown error'}`;
     }
 }
 

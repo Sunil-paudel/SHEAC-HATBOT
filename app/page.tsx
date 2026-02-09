@@ -1,21 +1,13 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { useSearchParams, useRouter } from 'next/navigation';
-import { useSession } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 
 export default function LandingPage() {
-  const { data: session, status } = useSession();
-  const searchParams = useSearchParams();
   const router = useRouter();
 
   // Auth modals removed for "free for all" mode
-
-  if (status === 'authenticated') {
-    router.push('/chat');
-    return null;
-  }
 
   return (
     <div className="relative overflow-hidden">
