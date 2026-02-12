@@ -125,10 +125,6 @@ export default function ConversationSidebar({
                             <div className="w-8 h-8 rounded-full bg-indigo-100 flex items-center justify-center text-indigo-600 font-bold text-xs">
                                 S
                             </div>
-                            <div className="text-xs">
-                                <p className="font-bold text-slate-700">Premium Plan</p>
-                                <p className="text-slate-400">Unlimited AI usage</p>
-                            </div>
                         </div>
                     </div>
                 </div>

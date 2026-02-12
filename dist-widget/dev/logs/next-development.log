@@ -1,0 +1,10 @@
+[00:00:00.437] Server  LOG     
+[00:00:00.437] Server  LOG       We detected TypeScript in your project and reconfigured your tsconfig.json file for you.
+[00:00:00.437] Server  LOG       The following suggested values were added to your tsconfig.json. These values can be changed to fit your project's needs:
+
+[00:00:00.437] Server  LOG       	- include was updated to add 'dist-widget/types/**/*.ts'
+[00:00:00.437] Server  LOG       	- include was updated to add 'dist-widget/dev/types/**/*.ts'
+[00:00:00.437] Server  LOG     
+[00:00:00.515] Server  LOG     ✓ Ready in 375ms
+[00:01:52.524] Server  WARN    ⚠ Cross origin request detected from 10.4.1.65 to /_next/* resource. In a future major version of Next.js, you will need to explicitly configure "allowedDevOrigins" in next.config to allow this.
+Read more: https://nextjs.org/docs/app/api-reference/config/next-config-js/allowedDevOrigins
